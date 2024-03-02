@@ -35,7 +35,7 @@ testGenAllWorlds = [
     genAllWorlds ["p1", "p2"] == [["p1","p2"],["p1"],["p2"],[]]]
     
 
-dansListe :: [[Char]] -> [Char] -> Bool
+dansListe :: World -> [Char] -> Bool
 dansListe [] _ = False
 dansListe (x:xs) y
   | y == x = True
@@ -58,7 +58,15 @@ testSat = [
     (sat ["p1", "p2"] (And (Var "p1") (Var "p2"))) == True]
 
 
-extrait :: Formula -> [[Char]]
+
+enlever :: World -> World
+enlever [] = []
+enlever (x:xs)
+  | dansListe xs x = enlever xs
+  | otherwise = x:(enlever xs)
+
+
+extrait :: Formula -> World
 extrait T = []
 extrait F = []
 extrait (Var v) = [v]
@@ -68,9 +76,11 @@ extrait (Or phi psi) = extrait phi ++ extrait psi
 extrait (Imp phi psi) = extrait phi ++ extrait psi
 extrait (Eqv phi psi) = extrait phi ++ extrait psi
 
+extraitElemets :: Formula -> World
+extraitElemets phi = enlever (extrait phi)
 
 findWorlds :: Formula -> [World]
-findWorlds phi = filter (\w -> sat w phi) (genAllWorlds (extrait phi))
+findWorlds phi = filter (\w -> sat w phi) (genAllWorlds (extraitElemets phi))
 
 
 testFindWorlds :: [Bool]
