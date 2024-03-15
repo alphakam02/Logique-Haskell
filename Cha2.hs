@@ -17,13 +17,11 @@ door2 = Var "t1"
 -- | Formule représentant la contrainte globale.
 constraint :: Formula
 constraint =
-  And
-    (Not (And (Var "p1") (Var "t1")))
-    (Not (And (Var "p2") (Var "t2")))
+  And (Eqv (Var "p1") (Not (Var "t1"))) (Eqv (Var "p2") (Not (Var "t2")))
 
 -- | Formule représentant la règle de l'épreuve.
 rule :: Formula
-rule = Or (And door1 door2) (And (Not door1) (Not door2))
+rule = Eqv door1 door2
 
 -- | Formule représentant la formule logique de l’épreuve.
 challenge2 :: Formula

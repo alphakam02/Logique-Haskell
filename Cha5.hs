@@ -12,14 +12,12 @@ door1 = Or (And (Var "p1") (Var "t2")) (And (Var "t1") (Var "p2"))
 
 -- | Formule représentant l'affiche de la porte 2.
 door2 :: Formula
-door2 = And (Var "t2") (Var "p1")
+door2 = And (Var "p1") (Var "t2")
 
 -- | Formule représentant la contrainte globale.
 constraint :: Formula
 constraint =
-  And
-    (Not (And (Var "p1") (Var "t1")))
-    (Not (And (Var "p2") (Var "t2")))
+  And (Eqv (Var "p1") (Not (Var "t1"))) (Eqv (Var "p2") (Not (Var "t2")))
 
 -- | Formule représentant la règle de l'épreuve.
 rule :: Formula

@@ -22,11 +22,8 @@ door3 = Var "t2"
 constraint :: Formula
 constraint =
   And
-    (Not (And (Var "p3") (Var "t3")))
-    ( And
-        (Not (And (Var "p1") (Var "t1")))
-        (Not (And (Var "p2") (Var "t2")))
-    )
+    (And (Eqv (Var "p1") (Not (Var "t1"))) (Eqv (Var "p2") (Not (Var "t2"))))
+    (Eqv (Var "p3") (Not (Var "t3")))
 
 -- | Formule représentant la règle de l'épreuve.
 rule :: Formula
